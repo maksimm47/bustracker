@@ -1,0 +1,36 @@
+<div *ngIf="forecast" class="result-card">
+  <div class="result-header">
+    <h2 class="result-title">Маршрут № {{ forecast.routeNumber }}</h2>
+    <span class="result-badge">Прогноз готов</span>
+  </div>
+
+  <div class="result-body">
+    <div class="result-row">
+      <span class="result-label">Время по расписанию:</span>
+      <span class="result-value">{{ forecast.scheduledTime }}</span>
+    </div>
+
+    <div class="result-row highlight">
+      <span class="result-label">Прогнозируемое время:</span>
+      <span class="result-value big">{{ forecast.predictedTime }}</span>
+    </div>
+
+    <div class="result-row">
+      <span class="result-label">Средняя задержка:</span>
+      <span class="result-value delay">+{{ forecast.averageDelay }} мин.</span>
+    </div>
+
+    <div class="result-row">
+      <span class="result-label">Проанализировано записей:</span>
+      <span class="result-value">{{ forecast.recordsCount }}</span>
+    </div>
+  </div>
+
+  <div class="result-footer">
+    <p>💡 Рекомендуем выходить из дома заранее, с учётом задержки.</p>
+  </div>
+</div>
+
+<div *ngIf="!forecast" class="empty-state">
+  <p>Введите данные и нажмите «Получить прогноз»</p>
+</div>
