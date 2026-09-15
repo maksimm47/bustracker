@@ -3,7 +3,7 @@ export interface TripHistoryRecord {
   dayOfWeek: string; 
   scheduledTime: string; 
   delayMinutes: number; 
-  routeNumber: string; 
+  busNumber: string; 
 } 
 
   
