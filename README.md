@@ -1,40 +1,108 @@
-# Bustracker
+# Прогноз прибытия автобуса
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.6.
+Веб-приложение на **Angular** для прогнозирования времени прибытия общественного транспорта на основе статистического анализа исторических данных.
 
-## Development server
+---
 
-To start a local development server, run:
+## Описание
 
-```bash
-ng serve
+Приложение позволяет пользователю ввести **номер маршрута**, **время по расписанию** и **день недели**, после чего рассчитывает среднюю задержку по историческим данным и выдаёт прогнозируемое время прибытия автобуса.
+
+---
+
+## Технологии
+
+- **Angular** (standalone-компоненты)
+- **TypeScript**
+- **RxJS**
+- **HTML / CSS**
+- **JSON** (хранение данных)
+
+---
+
+## Структура проекта
+
+```
+src/
+├── app/
+│   ├── app.ts          — главный компонент
+│   ├── app.html
+│   ├── app.css
+│   ├── app.config.ts             — конфигурация приложения (HttpClient)
+│   ├── models/
+│   │   └── bus.model.ts          — интерфейсы данных
+│   ├── services/
+│   │   ├── analytics.service.ts  — расчёт средней задержки
+│   │   └── bus-route.service.ts  — загрузка данных и формирование прогноза
+│   └── components/
+│       ├── route-search/         — форма поиска
+│       └── route-display/        — карточка результата
+├── main.ts                       — точка входа
+└── index.html
+
+public/
+└── bus_trip_history.json         — исторические данные о рейсах
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Компоненты и сервисы
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### `AppComponent` (`app.ts`)
+Главный компонент приложения. Связывает форму поиска и карточку результата. Принимает данные от `RouteSearchComponent`, вызывает `BusRouteService` и передаёт результат в `RouteDisplayComponent`.
 
-```bash
-ng generate component component-name
+### `RouteSearchComponent` (`route-search.component.ts`)
+Форма для ввода параметров поиска: **номер автобуса**, **время по расписанию**, **день недели**. По нажатию кнопки «Получить прогноз» отправляет данные родительскому компоненту через `@Output`.
+
+### `RouteDisplayComponent` (`route-display.component.ts`)
+Отображает результат прогноза: номер маршрута, время по расписанию, прогнозируемое время, среднюю задержку и количество проанализированных записей. Если данных нет — ничего не показывает.
+
+### `AnalyticsService` (`analytics.service.ts`)
+Содержит метод `calculateAverageDelay`, который вычисляет среднее арифметическое задержек. Если массив пустой — возвращает `0`.
+
+### `BusRouteService` (`bus-route.service.ts`)
+Основной сервис. Загружает JSON-файл с историей рейсов, фильтрует записи по номеру маршрута, времени и дню недели, вызывает `AnalyticsService` для расчёта средней задержки, формирует прогнозируемое время прибытия и возвращает результат.
+
+### `TripHistoryRecord`, `RouteForecast` (`bus.model.ts`)
+TypeScript-интерфейсы, описывающие структуру данных о рейсе и структуру прогноза.
+
+---
+
+## 📄 Формат данных
+
+Файл `bus_trip_history.json` содержит массив записей о рейсах:
+
+```json
+{
+  "date": "2026-08-03",
+  "dayOfWeek": "Monday",
+  "scheduledTime": "08:00",
+  "delayMinutes": 6,
+  "busNumber": "751"
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Поле | Описание |
+|:---|:---|
+| `date` | Дата рейса |
+| `dayOfWeek` | День недели (Monday–Sunday) |
+| `scheduledTime` | Время по расписанию (формат HH:MM) |
+| `delayMinutes` | Задержка в минутах |
+| `busNumber` | Номер маршрута |
+
+---
+
+## Запуск проекта
 
 ```bash
-ng generate --help
-```
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-## Что нужно для запуска
-
-Для запуска обязательно нужен Node.js и в папку с проектом нужно установить зависимости
-```bash
+# 1. Установка зависимостей
 npm install
+
+# 2. Запуск локального сервера
+ng serve
+
+# 3. Открыть в браузере
+http://localhost:4200
 ```
 
-## За что отвечает каждый компонент
+---
