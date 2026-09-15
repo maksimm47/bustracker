@@ -1,0 +1,48 @@
+<div class="search-card">
+  <h2 class="search-title">🔍 Поиск прогноза</h2>
+
+  <div class="search-form">
+    <div class="form-group">
+      <label for="routeNumber">Номер автобуса</label>
+      <input
+        id="routeNumber"
+        type="text"
+        [(ngModel)]="routeNumber"
+        placeholder="Например, 751"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="targetTime">Время по расписанию</label>
+      <input
+        id="targetTime"
+        type="text"
+        [(ngModel)]="targetTime"
+        placeholder="Например, 08:00"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="targetDay">День недели</label>
+      <select
+        id="targetDay"
+        [(ngModel)]="targetDay"
+        class="form-input"
+      >
+        <option value="Monday">Понедельник</option>
+        <option value="Tuesday">Вторник</option>
+        <option value="Wednesday">Среда</option>
+        <option value="Thursday">Четверг</option>
+        <option value="Friday">Пятница</option>
+        <option value="Saturday">Суббота</option>
+        <option value="Sunday">Воскресенье</option>
+      </select>
+    </div>
+
+    <button class="btn-search" (click)="onSearch()">
+      Получить прогноз
+    </button>
+  </div>
+</div>
